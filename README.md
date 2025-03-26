@@ -1,45 +1,49 @@
-# fim.nvim
+<div align = "center">
 
-A simple Neovim plugin for managing floating terminal instances with persistent processes.
+<h1>fim.nvim</h1>
 
-## Features
+<p align="center">
+  <img src="https://img.shields.io/github/stars/dpi0/fim.nvim?style=flat-square&color=yellow" alt="Stars">
+  <img src="https://img.shields.io/github/forks/dpi0/fim.nvim?style=flat-square" alt="Forks">
+  <img src="https://img.shields.io/github/contributors/dpi0/fim.nvim?style=flat-square&color=pink" alt="Contributors">
+  <img src="https://img.shields.io/github/license/dpi0/fim.nvim?style=flat-square" alt="License">
+</p>
 
-- Create and toggle multiple floating terminal instances
-- **Preserve terminal content and running processes** when toggling
-- Assign different keybindings for different terminal instances
-- Customize terminal appearance (size, border, position)
-- Automatically enter insert mode in terminals
-- Easy to configure
+<h4>A simple Neovim plugin for managing floating terminal instances.</h4>
 
-## Installation
+![screenshot-fim](https://github.com/user-attachments/assets/89109a36-19d7-45ee-92e1-dec4ce13b5cc)
 
-### Using lazy.nvim
+</div>
+
+## ⚡ Installation
+
+[lazy.nvim](https://github.com/folke/lazy.nvim)
 
 ```lua
 {
-  "yourusername/fim.nvim",
-  config = function()
-    require("fim").setup({
-      opts = {
-        width = 0.75,
-        height = 0.5,
-        border = "single",
-        position = 'center',
-        shell = vim.o.shell,
-        auto_insert = true,
-        auto_close = false
-      },
-      keys = {
-        t1 = "<leader>t1",
-        t2 = "<leader>t2",
-        t3 = "<leader>t3",
-      },
-    })
-  end
+    "dpi0/fim.nvim",
+    config = function()
+        require("fim").setup({
+            opts = {
+                width = 0.75,
+                height = 0.5,
+                border = "single",
+                position = 'center',
+                shell = vim.o.shell,
+                auto_insert = true,
+                auto_close = false
+            },
+            keys = {
+                t1 = "<leader>t1",
+                t2 = "<leader>t2",
+                t3 = "<leader>t3",
+            },
+        })
+    end
 }
 ```
 
-## Configuration
+## ⚙️ Configuration
 
 ### Options
 
@@ -55,7 +59,7 @@ A simple Neovim plugin for managing floating terminal instances with persistent 
 
 ### Keybindings
 
-Define keybindings for different terminal instances:
+**Default keybinds:**
 
 ```lua
 keys = {
@@ -66,7 +70,25 @@ keys = {
 }
 ```
 
-## Usage
+**My preferred way of toggling terminals:**
+
+```lua
+-- Helper function for mappings
+local function bind(mode, lhs, rhs, opts)
+  opts = opts or { noremap = true, silent = true }
+  vim.keymap.set(mode, lhs, rhs, opts)
+end
+
+bind("n", "<A-y>", ":FimTerm 1<CR>")
+bind("t", "<A-y>", "<C-\\><C-n>:FimTerm 1<CR>")
+bind("i", "<A-y>", "<Esc>:FimTerm 1<CR>")
+
+bind("n", "<A-i>", ":FimTerm 2<CR>")
+bind("t", "<A-i>", "<C-\\><C-n>:FimTerm 2<CR>")
+bind("i", "<A-i>", "<Esc>:FimTerm 2<CR>")
+```
+
+## 💡 Usage
 
 - Use your configured keybindings (like `<leader>t1`, `<leader>t2`, etc.) to toggle different terminal instances
 - Use `:FimTerm [id]` command to toggle a terminal with a specific ID
@@ -81,6 +103,6 @@ Each terminal instance maintains its state and running processes even when hidde
 - Running database clients
 - Any task that requires a persistent terminal
 
-## License
+## Contributing
 
-MIT
+Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue or submit a pull request.
