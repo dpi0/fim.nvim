@@ -1,0 +1,28 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  lint:
+    name: Lint with Selene
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Selene
+        run: |
+          curl -fsSL https://github.com/Kampfkarren/selene/releases/download/0.28.0/selene-0.28.0-linux.zip -o selene.zip
+          unzip -q selene.zip
+          chmod +x selene
+      - name: Run Selene Lint
+        run: ./selene .
+  format:
+    name: Check Format with Stylua
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Check formatting with stylua
+        uses: JohnnyMorganz/stylua-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: latest
+          args: --check .
