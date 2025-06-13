@@ -4,11 +4,16 @@ local term_buf = nil
 local term_win = nil
 local config = {
   start_with_insert = false,
+  width = 0.8,
+  height = 0.8,
 }
 
 local function create_float_win()
-  local width = math.floor(vim.o.columns * 0.8)
-  local height = math.floor(vim.o.lines * 0.8)
+  local width_val = config.width > 1 and config.width / 100 or config.width
+  local height_val = config.height > 1 and config.height / 100 or config.height
+
+  local width = math.floor(vim.o.columns * width_val)
+  local height = math.floor(vim.o.lines * height_val)
   local row = math.floor((vim.o.lines - height) / 2)
   local col = math.floor((vim.o.columns - width) / 2)
 
