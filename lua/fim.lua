@@ -13,8 +13,11 @@ local function create_float_win()
   local width_ratio = config.width > 1 and config.width / 100 or config.width
   local height_ratio = config.height > 1 and config.height / 100 or config.height
 
-  local win_width = math.floor(vim.o.columns * width_ratio)
-  local win_height = math.floor(vim.o.lines * height_ratio)
+  local max_width = vim.o.columns
+  local max_height = vim.o.lines - vim.o.cmdheight - 3
+
+  local win_width = math.floor(max_width * width_ratio)
+  local win_height = math.floor(max_height * height_ratio)
   local row, col
 
   if config.position == "top" then
@@ -24,10 +27,10 @@ local function create_float_win()
     row = vim.o.lines - win_height
     col = math.floor((vim.o.columns - win_width) / 2)
   elseif config.position == "left" then
-    row = math.floor((vim.o.lines - win_height) / 2)
+    row = math.floor((max_height - win_height) / 2)
     col = 0
   elseif config.position == "right" then
-    row = math.floor((vim.o.lines - win_height) / 2)
+    row = math.floor((max_height - win_height) / 2)
     col = vim.o.columns - win_width
   else -- center (default)
     row = math.floor((vim.o.lines - win_height) / 2)
