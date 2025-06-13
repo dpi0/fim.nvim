@@ -2,6 +2,9 @@ local M = {}
 
 local term_buf = nil
 local term_win = nil
+local config = {
+  start_with_insert = false,
+}
 
 local function create_float_win()
   local width = math.floor(vim.o.columns * 0.8)
@@ -38,11 +41,15 @@ function M.toggle()
       create_term_buf()
     end
     create_float_win()
-    vim.cmd "startinsert"
+    if config.start_with_insert then
+      vim.cmd "startinsert"
+    end
   end
 end
 
-function M.setup()
+function M.setup(opts)
+  opts = opts or {}
+  config = vim.tbl_extend("force", config, opts)
   vim.keymap.set("t", "<A-i>", function()
     M.toggle()
   end, { desc = "Toggle floating terminal" })
