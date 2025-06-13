@@ -6,21 +6,38 @@ local config = {
   start_with_insert = false,
   width = 0.8,
   height = 0.8,
+  position = "center",
 }
 
 local function create_float_win()
-  local width_val = config.width > 1 and config.width / 100 or config.width
-  local height_val = config.height > 1 and config.height / 100 or config.height
+  local width_ratio = config.width > 1 and config.width / 100 or config.width
+  local height_ratio = config.height > 1 and config.height / 100 or config.height
 
-  local width = math.floor(vim.o.columns * width_val)
-  local height = math.floor(vim.o.lines * height_val)
-  local row = math.floor((vim.o.lines - height) / 2)
-  local col = math.floor((vim.o.columns - width) / 2)
+  local win_width = math.floor(vim.o.columns * width_ratio)
+  local win_height = math.floor(vim.o.lines * height_ratio)
+  local row, col
+
+  if config.position == "top" then
+    row = 0
+    col = math.floor((vim.o.columns - win_width) / 2)
+  elseif config.position == "bottom" then
+    row = vim.o.lines - win_height
+    col = math.floor((vim.o.columns - win_width) / 2)
+  elseif config.position == "left" then
+    row = math.floor((vim.o.lines - win_height) / 2)
+    col = 0
+  elseif config.position == "right" then
+    row = math.floor((vim.o.lines - win_height) / 2)
+    col = vim.o.columns - win_width
+  else -- center (default)
+    row = math.floor((vim.o.lines - win_height) / 2)
+    col = math.floor((vim.o.columns - win_width) / 2)
+  end
 
   local opts = {
     relative = "editor",
-    width = width,
-    height = height,
+    width = win_width,
+    height = win_height,
     row = row,
     col = col,
     style = "minimal",
