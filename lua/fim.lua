@@ -3,7 +3,7 @@ local M = {}
 local term_buf = nil
 local term_win = nil
 local config = {
-  start_with_insert = false,
+  launch_with_insert = false,
   width = 0.8,
   height = 0.8,
   position = "center",
@@ -66,7 +66,7 @@ function M.toggle()
       create_term_buf()
     end
     create_float_win()
-    if config.start_with_insert then
+    if config.launch_with_insert then
       vim.cmd "startinsert"
     end
   end
